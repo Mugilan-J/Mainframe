@@ -1,0 +1,24 @@
+
+IDENTIFICATION DIVISION.
+PROGRAM-ID. BANK.
+
+DATA DIVISION.  
+   WORKING-STORAGE SECTION.  
+
+   01 BALANCE PIC 9(5) VALUE 10000.  
+   01 AMOUNT  PIC 9(5) VALUE 2000.  
+
+   PROCEDURE DIVISION.  
+
+       DISPLAY 'INITIAL BALANCE: ' BALANCE  
+
+       ADD AMOUNT TO BALANCE  
+       DISPLAY 'AFTER DEPOSIT: ' BALANCE  
+
+       MOVE 3000 TO AMOUNT  
+       SUBTRACT AMOUNT FROM BALANCE  
+       DISPLAY 'AFTER WITHDRAWAL: ' BALANCE  
+
+       STOP RUN.
+
+in this code why we not used the period . at the end of the display statements,move staments etc..
