@@ -1,0 +1,27 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SIMPLE-INTEREST.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  WS-PRINCIPAL      PIC 9(8)V99.
+       01  WS-RATE           PIC 9(3)V99.
+       01  WS-YEARS          PIC 9(3).
+       01  WS-INTEREST       PIC 9(10)V99.
+       01  WS-TOTAL          PIC 9(10)V99.
+       01  WS-SHOW           PIC Z(9)9.99.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           ACCEPT WS-PRINCIPAL
+           ACCEPT WS-RATE
+           ACCEPT WS-YEARS
+
+           COMPUTE WS-INTEREST ROUNDED =
+                   WS-PRINCIPAL * WS-RATE * WS-YEARS / 100
+           COMPUTE WS-TOTAL = WS-PRINCIPAL + WS-INTEREST
+
+           MOVE WS-INTEREST TO WS-SHOW
+           DISPLAY "Interest: " FUNCTION TRIM(WS-SHOW)
+           MOVE WS-TOTAL TO WS-SHOW
+           DISPLAY "Total: " FUNCTION TRIM(WS-SHOW)
+           STOP RUN.
