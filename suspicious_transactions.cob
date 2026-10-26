@@ -1,0 +1,42 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SUSPICIOUS-TXN.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  WS-COUNT            PIC 9(6).
+       01  WS-INDEX            PIC 9(6).
+       01  WS-FLAGGED          PIC 9(6) VALUE 0.
+       01  WS-LINE             PIC X(60).
+       01  WS-TXN-ID           PIC X(20).
+       01  WS-AMOUNT-TEXT      PIC X(20).
+       01  WS-CASH-FLAG        PIC X(5).
+       01  WS-AMOUNT           PIC 9(12).
+       01  WS-LIMIT-ANY        PIC 9(7) VALUE 200000.
+       01  WS-LIMIT-CASH       PIC 9(7) VALUE 50000.
+       01  WS-SHOW             PIC Z(5)9.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           ACCEPT WS-COUNT
+           PERFORM CHECK-ONE-TRANSACTION
+                   VARYING WS-INDEX FROM 1 BY 1
+                   UNTIL WS-INDEX > WS-COUNT
+           MOVE WS-FLAGGED TO WS-SHOW
+           DISPLAY "Flagged count: " FUNCTION TRIM(WS-SHOW)
+           STOP RUN.
+
+       CHECK-ONE-TRANSACTION.
+           MOVE SPACES TO WS-TXN-ID WS-AMOUNT-TEXT WS-CASH-FLAG
+           ACCEPT WS-LINE
+           UNSTRING FUNCTION TRIM(WS-LINE)
+               DELIMITED BY ALL SPACE
+               INTO WS-TXN-ID WS-AMOUNT-TEXT WS-CASH-FLAG
+           END-UNSTRING
+           MOVE FUNCTION UPPER-CASE(WS-CASH-FLAG) TO WS-CASH-FLAG
+           COMPUTE WS-AMOUNT = FUNCTION NUMVAL(WS-AMOUNT-TEXT)
+
+           IF WS-AMOUNT >= WS-LIMIT-ANY
+              OR (WS-CASH-FLAG = "Y" AND WS-AMOUNT >= WS-LIMIT-CASH)
+               DISPLAY FUNCTION TRIM(WS-TXN-ID)
+               ADD 1 TO WS-FLAGGED
+           END-IF.
