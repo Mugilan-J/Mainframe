@@ -1,0 +1,32 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. LATE-PENALTY.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  WS-INSTALMENT     PIC 9(7)V99.
+       01  WS-DAYS-LATE      PIC 9(3).
+       01  WS-PENALTY-PCT    PIC 9(3).
+       01  WS-PENALTY        PIC 9(7)V99.
+       01  WS-TOTAL          PIC 9(8)V99.
+       01  WS-MAX-PCT        PIC 9(2) VALUE 10.
+       01  WS-SHOW           PIC Z(7)9.99.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           ACCEPT WS-INSTALMENT
+           ACCEPT WS-DAYS-LATE
+
+           MOVE WS-DAYS-LATE TO WS-PENALTY-PCT
+           IF WS-PENALTY-PCT > WS-MAX-PCT
+               MOVE WS-MAX-PCT TO WS-PENALTY-PCT
+           END-IF
+
+           COMPUTE WS-PENALTY ROUNDED =
+                   WS-INSTALMENT * WS-PENALTY-PCT / 100
+           COMPUTE WS-TOTAL = WS-INSTALMENT + WS-PENALTY
+
+           MOVE WS-PENALTY TO WS-SHOW
+           DISPLAY "Penalty: " FUNCTION TRIM(WS-SHOW)
+           MOVE WS-TOTAL TO WS-SHOW
+           DISPLAY "Total payable: " FUNCTION TRIM(WS-SHOW)
+           STOP RUN.
